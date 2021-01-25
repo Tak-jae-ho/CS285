@@ -1,0 +1,19 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "args": ["--expert_policy_file","cs285/policies/experts/Walker2d.pkl","--env_name","Walker2d-v2","--exp_name","bc_Walker2d","--n_iter","1",
+                "--expert_data","cs285/expert_data/expert_data_Walker2d-v2.pkl","--video_log_freq","1", "--train_batch_size","5000"],
+            // "args": ["--expert_policy_file","cs285/policies/experts/Walker2d.pkl","--env_name","Walker2d-v2","--exp_name","dagger_Walker2d","--n_iter","10",
+            //     "--do_dagger","--expert_data","cs285/expert_data/expert_data_Walker2d-v2.pkl"],
+        }
+    ]
+}
