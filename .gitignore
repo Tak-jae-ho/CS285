@@ -1,7 +1,7 @@
 *.pyc
 data/
 .vscode/settings.json
-hw1/.vscode/settings.json
+*/.vscode/settings.json
 # */cs285.egg-info/dependency_links.txt
 # */cs285.egg-info/PKG-INFO
 # */cs285.egg-info/SOURCES.txt
