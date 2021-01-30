@@ -3,7 +3,7 @@ import numpy as np
 from .base_agent import BaseAgent
 from cs285.policies.MLP_policy import MLPPolicyPG
 from cs285.infrastructure.replay_buffer import ReplayBuffer
-
+from cs285.infrastructure import utils
 
 class PGAgent(BaseAgent):
     def __init__(self, env, agent_params):
@@ -46,7 +46,8 @@ class PGAgent(BaseAgent):
 
         # TODO: step 3: use all datapoints (s_t, a_t, q_t, adv_t) to update the PG actor/policy
         ## HINT: `train_log` should be returned by your actor update method
-        train_log = TODO
+
+        train_log = self.actor.update(observations, actions, advantages, q_values=q_values)
 
         return train_log
 
@@ -91,7 +92,7 @@ class PGAgent(BaseAgent):
             ## have the same mean and standard deviation as the current batch of q_values
             baselines = baselines_unnormalized * np.std(q_values) + np.mean(q_values)
             ## TODO: compute advantage estimates using q_values and baselines
-            advantages = TODO
+            advantages = q_values - baselines
 
         # Else, just set the advantage to [Q]
         else:
@@ -102,7 +103,7 @@ class PGAgent(BaseAgent):
             ## TODO: standardize the advantages to have a mean of zero
             ## and a standard deviation of one
             ## HINT: there is a `normalize` function in `infrastructure.utils`
-            advantages = TODO
+            advantages = utils.normalize(advantages, advantages.mean(), advantages.std())
 
         return advantages
 
@@ -131,6 +132,9 @@ class PGAgent(BaseAgent):
         # TODO: create list_of_discounted_returns
         # Hint: note that all entries of this output are equivalent
             # because each sum is from 0 to T (and doesnt involve t)
+        T = len(rewards)
+        sum = np.sum((self.gamma**np.arange(T))*np.asarray(rewards))
+        list_of_discounted_returns = sum.repeat(T)
 
         return list_of_discounted_returns
 
@@ -146,6 +150,13 @@ class PGAgent(BaseAgent):
             # because the summation happens over [t, T] instead of [0, T]
         # HINT2: it is possible to write a vectorized solution, but a solution
             # using a for loop is also fine
+        # for t in range(len(rewards)):
+        
+        T = len(rewards)
+        list_of_discounted_cumsums = np.zeros(T)
+        for t in range(T):
+            sum = np.sum((self.gamma**np.arange(T-t))*np.asarray(rewards[t:]))
+            list_of_discounted_cumsums[t] = sum
 
         return list_of_discounted_cumsums
 
