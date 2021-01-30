@@ -3,11 +3,11 @@ import tensorflow as tf
 
 def get_section_results(file):
     """
-        requires tensorflow==1.12.0
+        requires tensorflow==1.12.0, but use 2.3.0 and tf.compat.v1~
     """
     X = []
     Y = []
-    for e in tf.train.summary_iterator(file):
+    for e in tf.compat.v1.train.summary_iterator(file):
         for v in e.summary.value:
             if v.tag == 'Train_EnvstepsSoFar':
                 X.append(v.simple_value)
@@ -18,7 +18,7 @@ def get_section_results(file):
 if __name__ == '__main__':
     import glob
 
-    logdir = 'data/q1_lb_rtg_na_CartPole-v0_13-09-2020_23-32-10/events*'
+    logdir = 'data/q1_lb_no_rtg_dsa_CartPole-v0_27-01-2021_21-56-08/events*'
     eventfile = glob.glob(logdir)[0]
 
     X, Y = get_section_results(eventfile)
