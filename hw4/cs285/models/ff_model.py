@@ -156,7 +156,7 @@ class FFModel(nn.Module, BaseModel):
             data_statistics['delta_std']
             )
 
-        target = (ptu.from_numpy(next_observations - observations)) # TODO(Q1) compute the normalized target for the model.
+        target = ptu.from_numpy((next_observations-observations - data_statistics['delta_mean']) / data_statistics['delta_std']) # TODO(Q1) compute the normalized target for the model.
         # Hint: you should use `data_statistics['delta_mean']` and
         # `data_statistics['delta_std']`, which keep track of the mean
         # and standard deviation of the model.
